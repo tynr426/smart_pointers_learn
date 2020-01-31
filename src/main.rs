@@ -2,8 +2,12 @@ mod my_box;
 mod my_rc;
 use my_box::MyBox;
 mod ref_cell;
+mod thread_mutex;
+mod channel_send_rec;
 use ref_cell::{LimitTracker, MockMessenger};
 use std::cell::RefCell;
+use thread_mutex::{thread_mutex,dead_lock};
+use channel_send_rec::channel_send_rec;
 fn main() {
     let x = 5;
     let y = MyBox::new(x);
@@ -19,6 +23,11 @@ fn main() {
     assert_eq!(*xx, *m);
     my_rc::test();
     it_sends_an_over_75_percent_warning_message();
+    //消息传递
+    channel_send_rec();
+    //mutex互斥，arc+mutex 多线程间共享所有权
+    //thread_mutex();
+
 }
 fn hello(name: &str) {
     println!("Hello, {}!", name);
